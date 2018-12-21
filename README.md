@@ -36,9 +36,15 @@ To start on this project, you'll need database software (provided by a Linux vir
 
 6. When vagrant up is finished running, you will get your shell prompt back. At this point, you can run `vagrant ssh` to log in to your newly installed Linux VM.
 
+### Download the data
+
+ 7. Download and unzip the data from https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip. Put `newsdata.sql` into the `vagrant` directory.
+ 
+ 8. From your terminal `cd` into the `vagrant` directory and use the command `psql -d news -f newsdata.sql` to load the data.
+
 ### Running the code
 
- 7. Clone this repository and `cd` to its directory.
+ 9. Clone this repository and `cd` to its directory.
  
- 8. Run the command `python log_main.py`
+ 10. From your terminal run the command `python log_main.py`
  
