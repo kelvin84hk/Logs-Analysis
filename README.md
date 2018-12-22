@@ -48,3 +48,46 @@ To start on this project, you'll need database software (provided by a Linux vir
  
  10. From your terminal run the command `python log_main.py`
  
+ ## Program's design
+ 
+  `loadSQL(q)` function : it is a helper function to extract data from database using SQL query.
+  
+  `load_q"x"` function : functions to load the questions and the corresponding answers.
+  
+  SQL for q1 : 
+   ```
+      select articles.title, article_view.view_num from articles 
+      right join 
+      (select substr(path,10) as slug,count(path) as view_num 
+        from log 
+        where path like '%article%' 
+        group by slug 
+        order by view_num desc 
+        limit 3) as article_view
+      on articles.slug = article_view.slug
+      order by article_view.view_num desc;
+   ```
+  SQL for q2 :
+  ```
+      select author_view.name as names, count(author_view.name) as num 
+      from
+      (select authors.name , articles.slug
+        from authors right join articles 
+        on authors.id = articles.author) as author_view 
+      join
+      (select substr(path,10) as slug from log
+        where path like '%article%') as article_view
+      on author_view.slug = article_view.slug
+      group by names
+      order by num desc;
+  ```
+  SQL for q3 :
+  ```
+      select stats.d,100.0*stats.e/stats.c as error 
+      from (select distinct date(time) as d,
+        sum(case when status like '4%' or status like '5%' then 1 else 0 end) as e,
+        count(status) as c from log 
+        group by d ) as stats
+      where 100.0*stats.e/stats.c >1.0;
+  ```
+
