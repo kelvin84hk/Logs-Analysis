@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import psycopg2
 
 q1 = "What are the most popular three articles of all time?"
@@ -7,7 +8,11 @@ dbname = "dbname=news"
 
 
 def loadSQL(q):
-    db = psycopg2.connect(dbname)
+    try:
+        db = psycopg2.connect(dbname)
+    except psycopg2.Error:
+        print psycopg2.Error.pgerror
+        return None
     c = db.cursor()
     c.execute(q)
     d = c.fetchall()
